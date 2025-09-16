@@ -7,10 +7,8 @@ fn main() {
     let y = 20;
 
     if x < y {
-        print!("X");
         let res = suma(x, y);
     } else {
-        print!("Y");
         return;
     }
 }

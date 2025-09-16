@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
+#include "Node.h"
 #include "cmake-build-debug/parser.hpp" // Generado por Bison
 
 //Funciones del Lexer y Parser generados por Bison y Flex
@@ -9,6 +9,7 @@ extern int yylex();
 extern char* yytext;
 extern FILE* yyin;
 extern int yyparse();
+extern Node* root;
 
 using namespace std;
 
@@ -59,7 +60,13 @@ int main() {
     fseek(yyin, 0, SEEK_SET);
 
     cout << "=== Analisis Sintactico ===\n";
-    yyparse();
+
+    if (yyparse() == 0) {
+        cout << "Analisis sintactico exitoso: Todo coincide con las reglas del Lenguaje Rust\n";
+        if (root) root->print(0);
+    } else {
+        cout<< "Error sintactico encontrado, no coincide con las reglas del Lenguaje Rust.\n";
+    }
 
     fclose(yyin);
     return 0;

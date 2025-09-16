@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(Compiladores_I___Proyecto LANGUAGES C CXX)
+include_directories(${CMAKE_SOURCE_DIR})
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -22,4 +23,6 @@ add_executable(Compiladores_I___Proyecto
         main.cpp
         ${BISON_MyParser_OUTPUTS}
         ${FLEX_MyScanner_OUTPUTS}
+        Node.cpp
+        Node.h
 )
