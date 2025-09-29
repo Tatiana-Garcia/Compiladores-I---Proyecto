@@ -1,15 +1,4 @@
-fn suma(a: i32, b: i32) -> i32 {
-    return a + b;
-}
-
 fn main() {
-    let x = ;
-    let y = 20;
-
-    if x < y {
-        let res = suma(x, y);
-    } else {
-        return;
-    }
+    prin("Hello, world!");
 }
 

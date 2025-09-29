@@ -11,7 +11,7 @@
 #include "Node.h"
 using namespace std;
 
-// Funciones Bison y demas
+// Funciones
 int yylex(void);
 extern char* yytext;
 void yyerror(const char *s);
@@ -27,7 +27,7 @@ int syntaxErrors = 0;
     Node* astTree;
 }
 
-/* tokens */
+/* declare tokens */
 %token <str> PRINT PRINTLN STRING IDENTIFIER
 %token <f> FLOAT
 %token <i> INTEGER
