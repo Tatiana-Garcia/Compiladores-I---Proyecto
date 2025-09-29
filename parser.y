@@ -11,13 +11,14 @@
 #include "Node.h"
 using namespace std;
 
-// Prototipos para que Bison conozca estas funciones:
+// Funciones Bison y demas
 int yylex(void);
+extern char* yytext;
 void yyerror(const char *s);
 Node* root;
+int syntaxErrors = 0;
 %}
 
-// Le decimos que el tipo de los valores es char*
 %union {
     char* str;
     float f;
@@ -26,7 +27,7 @@ Node* root;
     Node* astTree;
 }
 
-/* declare tokens */
+/* tokens */
 %token <str> PRINT PRINTLN STRING IDENTIFIER
 %token <f> FLOAT
 %token <i> INTEGER
@@ -55,9 +56,9 @@ program:
     function: FUNCTION IDENTIFIER LPARENTHESES param_list RPARENTHESES ARROW type LBRACE stmt_list RBRACE {
 
                 $$ = new Node("function", $2);
-                $$->getChildren().push_back($4); // param_list
-                $$->getChildren().push_back($7); // type
-                $$->getChildren().push_back($9); // stmt_list
+                $$->getChildren().push_back($4);
+                $$->getChildren().push_back($7);
+                $$->getChildren().push_back($9);
             }
             | FUNCTION MAIN LPARENTHESES RPARENTHESES LBRACE stmt_list RBRACE {
                 $$ = new Node("main", "main");
@@ -66,8 +67,8 @@ program:
             | FUNCTION IDENTIFIER LPARENTHESES param_list RPARENTHESES LBRACE stmt_list RBRACE{
 
                 $$ = new Node("function", $2);
-                $$->getChildren().push_back($4); // param_list
-                $$->getChildren().push_back($7); // stmt_list
+                $$->getChildren().push_back($4);
+                $$->getChildren().push_back($7);
             }
             ;
     param_list: /*empty*/ { $$ = new Node("param_list", ""); }
@@ -133,6 +134,9 @@ program:
              | expr SEMICOLON {
                 $$ = new Node("exprStatement", "");
                 $$->getChildren().push_back($1);
+             }
+             | error SEMICOLON {
+                $$ = new Node("errorStatement", "Error de sintaxis en statement");
              }
              ;
     print_arg: STRING   { $$ = new Node("string", $1); }
@@ -229,5 +233,10 @@ program:
 
 // Definición de yyerror
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "\n\nError sintactico: %s en '%s'\n", s, yytext);
+    if (root) {
+        Node* errorNode = new Node("error", string(s) + " cerca de '" + string(yytext) + "'");
+        root->getChildren().push_back(errorNode);
+    }
+    syntaxErrors++;
 }

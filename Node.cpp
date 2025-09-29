@@ -35,7 +35,7 @@ void Node::setValue(string token) {
 
 void Node::print(int tam) {
     //impresion del arbol ast
-    for (int i = 0; i < tam; i++) cout << "  ";
+    for (int i = 0; i < tam; i++) cout << "-";
     cout << token;
     if (!value.empty()) cout << " (" << value << ")";
     cout << endl;

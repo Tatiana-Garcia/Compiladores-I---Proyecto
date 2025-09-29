@@ -10,6 +10,7 @@ extern char* yytext;
 extern FILE* yyin;
 extern int yyparse();
 extern Node* root;
+extern int syntaxErrors;
 
 using namespace std;
 
@@ -61,12 +62,14 @@ int main() {
 
     cout << "=== Analisis Sintactico ===\n";
 
-    if (yyparse() == 0) {
+    if (yyparse() == 0 && syntaxErrors==0) {
         cout << "Analisis sintactico exitoso: Todo coincide con las reglas del Lenguaje Rust\n";
-        if (root) root->print(0);
+        //if (root) root->print(0);
     } else {
-        cout<< "Error sintactico encontrado, no coincide con las reglas del Lenguaje Rust.\n";
+        cout<< "Error sintactico encontrado, hay "<<syntaxErrors << " errores que no coinciden con las reglas del Lenguaje Rust.\n";
     }
+
+    if (root) root->print(0);
 
     fclose(yyin);
     return 0;

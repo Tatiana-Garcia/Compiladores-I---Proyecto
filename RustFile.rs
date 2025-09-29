@@ -3,7 +3,7 @@ fn suma(a: i32, b: i32) -> i32 {
 }
 
 fn main() {
-    let x = 10;
+    let x = ;
     let y = 20;
 
     if x < y {
